@@ -18,6 +18,8 @@ unsigned int* pixel = (unsigned int*)memory;
     }
 }
 void Renderer::drawRectangle(int x0, int y0, int x1, int y1, unsigned int color){
+    x1=x0+x1;
+    y1=y0+y1;
     x0=clamp(0,x0,width);
     y0=clamp(0,y0,height);
     x1=clamp(0,x1,width);
@@ -30,17 +32,12 @@ unsigned int* pixel = (unsigned int*)memory+x0+i*width; //starting pixel must be
     }
 }
 void Renderer::drawResponsiveRectangle(float x, float y, float sizeX, float sizeY, unsigned int color){
-    if(width>height){
-    x=x*height;
-    y=y*height;
-    sizeX=sizeX*height;
-    sizeY=sizeY*height;
-    }else{
+    sizeX=x+sizeX;
+    sizeY=y+sizeY;
     x=x*width;
-    y=y*width;
+    y=y*height;
     sizeX=sizeX*width;
-    sizeY=sizeY*width;
-    }
+    sizeY=sizeY*height;
     int x0=clamp(0,(int)x,width);
     int y0=clamp(0,(int)y,height);
     int x1=clamp(0,(int)sizeX,width);

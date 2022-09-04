@@ -1,5 +1,8 @@
 #include <windows.h>
+#include <iostream>
 #include "renderer.h"
+#include "platformCommon.h"
+#include "game.h"
 bool isRunning = true;
 struct RenderState {
 void *memory;
@@ -48,27 +51,59 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     windowClass.lpfnWndProc = WindowCallback;
 
     RegisterClass(&windowClass);
-
     HWND window = CreateWindow(windowClass.lpszClassName, "Ping Pong Game", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
     HDC hdc = GetDC(window);
+
+    Input input={};
+    float deltaTime=0.016666f;
+    LARGE_INTEGER frameBeginTime;
+    QueryPerformanceCounter(&frameBeginTime);
+    float performanceFrequency;
+    {
+        LARGE_INTEGER perf;
+        QueryPerformanceFrequency(&perf);
+        performanceFrequency=(float)perf.QuadPart;
+    }
     while(isRunning){
     //get input
     MSG message;
+
+    for(int i=0; i<BUTTON_COUNT; i++){
+        input.buttons[i].changed=false;
+    }
     while (PeekMessage(&message, window, 0, 0, PM_REMOVE)){
-        TranslateMessage(&message);
+            switch(message.message){
+            case WM_KEYUP:
+            case WM_KEYDOWN:{
+                unsigned int vkCode =(unsigned int)message.wParam;
+                bool isDown = ((message.lParam & (1<<31))==0);
+#define processButton(b, vk)\
+    case vk:{\
+        input.buttons[b].isDown=isDown;\
+        input.buttons[b].changed= isDown != input.buttons[b].isDown;\
+    } break;
+                switch(vkCode){
+                processButton(BUTTON_UP, VK_UP);
+                processButton(BUTTON_DOWN, VK_DOWN);
+                processButton(BUTTON_W, 0x57);
+                processButton(BUTTON_S, 0x53);
+                }
+                }break;
+        default:
+                TranslateMessage(&message);
         DispatchMessage(&message);
+            break;
+            }
     }
     //simulation
     Renderer renderer(renderState.memory,renderState.width,renderState.height);
-    renderer.drawBackground(0x303030);
-    renderer.drawResponsiveRectangle(0.2,0.2,0.4,0.7,0xffffff);
-    /*unsigned int* pixel = (unsigned int*)renderState.memory;
-    for (int i=0; i<renderState.height; i++){
-        for(int j=0; j<renderState.width; j++){
-            *pixel++=0x000000+j;
-        }
-    }*/
+    simulateGame(&input, &renderer,deltaTime);
     //rendering
     StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0 ,0, renderState.width, renderState.height, renderState.memory,&renderState.bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
+    LARGE_INTEGER frameEndTime;
+    QueryPerformanceCounter(&frameEndTime);
+    deltaTime=float(frameEndTime.QuadPart-frameBeginTime.QuadPart)/performanceFrequency;
+    frameBeginTime=frameEndTime;
     }
+    return 0;
 }
