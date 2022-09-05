@@ -34,9 +34,9 @@ unsigned int* pixel = (unsigned int*)memory+x0+i*width; //starting pixel must be
 void Renderer::drawResponsiveRectangle(float x, float y, float sizeX, float sizeY, unsigned int color){
     sizeX=x+sizeX;
     sizeY=y+sizeY;
-    x=x*width;
+    x=x*height;
     y=y*height;
-    sizeX=sizeX*width;
+    sizeX=sizeX*height;
     sizeY=sizeY*height;
     int x0=clamp(0,(int)x,width);
     int y0=clamp(0,(int)y,height);
@@ -48,4 +48,69 @@ unsigned int* pixel = (unsigned int*)memory+x0+i*width; //starting pixel must be
             *pixel++=color;
         }
     }
+}
+void Renderer::drawNumber(int number, float x, float y, float nsize, unsigned int color){
+switch(number){
+    case 0:
+    drawResponsiveRectangle(x,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x+nsize,y,nsize,nsize,color);
+    drawResponsiveRectangle(x+nsize,y+nsize*4,nsize,nsize,color);
+    break;
+    case 1:
+    drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*5,color);
+    break;
+    case 2:
+    drawResponsiveRectangle(x,y, nsize*3, nsize, color);
+    drawResponsiveRectangle(x,y+nsize*2, nsize*3, nsize, color);
+    drawResponsiveRectangle(x,y+nsize*4, nsize*3, nsize, color);
+    drawResponsiveRectangle(x,y+nsize,nsize,nsize,color);
+    drawResponsiveRectangle(x+nsize*2,y+nsize*3,nsize,nsize,color);
+
+    break;
+    case 3:
+        drawResponsiveRectangle(x,y+nsize*2, nsize*3, nsize, color);
+        drawResponsiveRectangle(x,y+nsize*4, nsize*3, nsize, color);
+        drawResponsiveRectangle(x,y, nsize*3, nsize, color);
+        drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*4,color);
+
+    break;
+    case 4:
+        drawResponsiveRectangle(x,y+nsize,nsize,nsize*3,color);
+        drawResponsiveRectangle(x+nsize,y+nsize,nsize,nsize,color);
+        drawResponsiveRectangle(x+nsize,y+nsize*4,nsize,nsize,color);
+        drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*5,color);
+    break;
+    case 5:
+    drawResponsiveRectangle(x,y, nsize*3, nsize, color);
+    drawResponsiveRectangle(x,y+nsize*2, nsize*3, nsize, color);
+    drawResponsiveRectangle(x,y+nsize*4, nsize*3, nsize, color);
+    drawResponsiveRectangle(x+nsize*2,y+nsize,nsize,nsize,color);
+    drawResponsiveRectangle(x,y+nsize*3,nsize,nsize,color);
+    break;
+    case 6:
+    drawResponsiveRectangle(x,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x,y,nsize*3,nsize,color);
+    drawResponsiveRectangle(x+nsize*2,y+nsize,nsize,nsize,color);
+    drawResponsiveRectangle(x,y+nsize*2,nsize*3,nsize,color);
+    drawResponsiveRectangle(x,y+nsize*4,nsize*3,nsize,color);
+    break;
+    case 7:
+    drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x+nsize,y+nsize*4,nsize, nsize, color);
+    break;
+    case 8:
+    drawResponsiveRectangle(x,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x+nsize,y,nsize,nsize,color);
+    drawResponsiveRectangle(x+nsize,y+nsize*4,nsize,nsize,color);
+    drawResponsiveRectangle(x+nsize,y+nsize*2,nsize,nsize,color);
+    break;
+    case 9:
+    drawResponsiveRectangle(x+nsize*2,y,nsize,nsize*5,color);
+    drawResponsiveRectangle(x,y+nsize*2,nsize*2,nsize,color);
+    drawResponsiveRectangle(x,y+nsize*3,nsize,nsize,color);
+    drawResponsiveRectangle(x,y+nsize*4,nsize*2,nsize,color);
+    break;
+}
 }

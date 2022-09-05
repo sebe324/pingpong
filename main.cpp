@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "platformCommon.h"
 #include "game.h"
+#include <ctime>
 bool isRunning = true;
 struct RenderState {
 void *memory;
@@ -44,7 +45,6 @@ return result;
 }
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd){
-
     WNDCLASS windowClass = {};
     windowClass.style= CS_HREDRAW | CS_VREDRAW;
     windowClass.lpszClassName = "Ping Pong Game";
@@ -64,6 +64,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         QueryPerformanceFrequency(&perf);
         performanceFrequency=(float)perf.QuadPart;
     }
+    srand(time(NULL));
     while(isRunning){
     //get input
     MSG message;

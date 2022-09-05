@@ -17,5 +17,7 @@ class Renderer{
         //1 is the screen size.
         void drawResponsiveRectangle(float x, float y, float sizeX, float sizeY, unsigned int color);
 
+        //draws a number
+        void drawNumber(int number, float x, float y, float nsize, unsigned int color);
 };
 #endif
