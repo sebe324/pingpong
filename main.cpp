@@ -4,6 +4,7 @@
 #include "platformCommon.h"
 #include "game.h"
 #include <ctime>
+#include "player.h"
 bool isRunning = true;
 struct RenderState {
 void *memory;
@@ -65,6 +66,11 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         performanceFrequency=(float)perf.QuadPart;
     }
     srand(time(NULL));
+    Player player1(30,175,20,150,0x0984e3, 0x57, 0x53);
+    Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN);
+    Player players[2]={player1,player2};
+    Ball ball(100,100,30,30,0xffffff,0.8);
+    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball);
     while(isRunning){
     //get input
     MSG message;
@@ -79,16 +85,16 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
                 unsigned int vkCode =(unsigned int)message.wParam;
                 bool isDown = ((message.lParam & (1<<31))==0);
 #define processButton(b, vk)\
-    case vk:{\
+    if(vkCode==vk){\
         input.buttons[b].isDown=isDown;\
         input.buttons[b].changed= isDown != input.buttons[b].isDown;\
-    } break;
-                switch(vkCode){
-                processButton(BUTTON_UP, VK_UP);
-                processButton(BUTTON_DOWN, VK_DOWN);
-                processButton(BUTTON_W, 0x57);
-                processButton(BUTTON_S, 0x53);
-                }
+        }
+                const int p1up=player1.getBtnUp();
+                const int p1down=player1.getBtnDown();
+                processButton(BUTTON_P1UP, player1.getBtnUp());
+                processButton(BUTTON_P1DOWN, player1.getBtnDown());
+                processButton(BUTTON_P2UP, player2.getBtnUp());
+                processButton(BUTTON_P2DOWN, player2.getBtnDown());
                 }break;
         default:
                 TranslateMessage(&message);
@@ -97,9 +103,11 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
             }
     }
     //simulation
-    Renderer renderer(renderState.memory,renderState.width,renderState.height);
-    simulateGame(&input, &renderer,deltaTime);
+    game.simulateGame(&input,deltaTime);
     //rendering
+    Renderer renderer(renderState.memory,renderState.width,renderState.height);
+    renderer.drawBackground(0x2d3436);
+    game.renderGame(&renderer);
     StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0 ,0, renderState.width, renderState.height, renderState.memory,&renderState.bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
     LARGE_INTEGER frameEndTime;
     QueryPerformanceCounter(&frameEndTime);

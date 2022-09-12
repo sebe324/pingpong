@@ -5,19 +5,20 @@ class Renderer{
         void* memory;
         int width;
         int height;
-        int clamp(int minimum, int value, int maximum);
     public:
-        Renderer(void* memory, int width, int height); //constructor
+        Renderer(void* memory, int recWidth, int recHeight); //constructor
         void drawBackground(unsigned int color); // draws a background with a specified color
 
-        //draws a rectangle starting at x0, y0 and ending at x0+x1 and y0+y1.
+        //draws a rectangle starting at (x, y) and ending at (x+width, y+height).
         void drawRectangle(int x0, int y0, int x1, int y1, unsigned int color);
 
         //the same as above, BUT the values are relative to the window width or height.
         //1 is the screen size.
-        void drawResponsiveRectangle(float x, float y, float sizeX, float sizeY, unsigned int color);
+        void drawResponsiveRectangle(float x, float y, float recWidth, float recHeight, unsigned int color);
 
         //draws a number
         void drawNumber(int number, float x, float y, float nsize, unsigned int color);
+        int getHeight();
+        int getWidth();
 };
 #endif

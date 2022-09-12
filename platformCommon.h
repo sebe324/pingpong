@@ -5,10 +5,10 @@ struct ButtonState{
  bool changed;
 };
 enum{
-BUTTON_UP,
-BUTTON_DOWN,
-BUTTON_W,
-BUTTON_S,
+BUTTON_P1UP,
+BUTTON_P1DOWN,
+BUTTON_P2UP,
+BUTTON_P2DOWN,
 
 BUTTON_COUNT,
 };
