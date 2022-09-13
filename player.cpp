@@ -1,9 +1,10 @@
 #include "player.h"
 #include <iostream>
-Player::Player(int x, int y, int w, int h, unsigned int c, int btn1, int btn2) : Entity(x,y,w,h,c){
+Player::Player(int x, int y, int w, int h, unsigned int c, int btn1, int btn2, int vel) : Entity(x,y,w,h,c){
 score=0;
 btnUp=btn1;
 btnDown=btn2;
+velocity=vel;
 }
 Player::Player(int x, int y, int w, int h, unsigned int c, int s) : Entity(x,y,w,h,c){
 score=s;
@@ -29,4 +30,10 @@ return btnDown;
 }
 void Player::incScore(){
 score++;
+}
+int Player::getVelocity(){
+return velocity;
+}
+void Player::setVelocity(int vel){
+velocity=vel;
 }

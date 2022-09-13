@@ -5,8 +5,9 @@ class Player: public Entity{
     private:
         int score;
         int btnUp, btnDown;
+        int velocity;
     public:
-    Player(int x, int y, int w, int h, unsigned int c, int btn1, int btn2);
+    Player(int x, int y, int w, int h, unsigned int c, int btn1, int btn2, int vel);
     Player(int x, int y, int w, int h, unsigned int c, int s);
     Player();
     void setScore(int s);
@@ -16,5 +17,7 @@ class Player: public Entity{
     void setBtnDown(int btn);
     int getBtnDown();
     void incScore();
+    int getVelocity();
+    void setVelocity(int vel);
 };
 #endif

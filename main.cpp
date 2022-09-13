@@ -12,7 +12,13 @@ int width;
 int height;
 BITMAPINFO bitmapInfo;
 };
+
 RenderState renderState;
+    Player player1(30,175,20,150,0x0984e3, 0x57, 0x53, 650);
+    Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN, 650);
+    Player players[2]={player1,player2};
+    Ball ball(100,100,30,30,0xffffff,0.8);
+    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball);
 LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     LRESULT result=0;
     switch(uMsg){
@@ -39,6 +45,8 @@ LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             renderState.bitmapInfo.bmiHeader.biPlanes=1;
             renderState.bitmapInfo.bmiHeader.biBitCount=32;
             renderState.bitmapInfo.bmiHeader.biCompression=BI_RGB;
+            game.setPosX((renderState.width-900)/2);
+            game.setPosY(renderState.height-600);
         }break;
     default:  result = DefWindowProc(hwnd, uMsg, wParam, lParam); break;
     }
@@ -66,11 +74,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         performanceFrequency=(float)perf.QuadPart;
     }
     srand(time(NULL));
-    Player player1(30,175,20,150,0x0984e3, 0x57, 0x53);
-    Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN);
-    Player players[2]={player1,player2};
-    Ball ball(100,100,30,30,0xffffff,0.8);
-    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball);
     while(isRunning){
     //get input
     MSG message;
@@ -89,8 +92,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         input.buttons[b].isDown=isDown;\
         input.buttons[b].changed= isDown != input.buttons[b].isDown;\
         }
-                const int p1up=player1.getBtnUp();
-                const int p1down=player1.getBtnDown();
                 processButton(BUTTON_P1UP, player1.getBtnUp());
                 processButton(BUTTON_P1DOWN, player1.getBtnDown());
                 processButton(BUTTON_P2UP, player2.getBtnUp());
