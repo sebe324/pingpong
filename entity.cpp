@@ -1,5 +1,5 @@
 #include "entity.h"
-Entity::Entity(int x, int y, int w, int h, unsigned int c){
+Entity::Entity(float x, float y, int w, int h, unsigned int c){
     posX=x;
     posY=y;
     width=w;
@@ -7,16 +7,16 @@ Entity::Entity(int x, int y, int w, int h, unsigned int c){
     color=c;
 }
 Entity::Entity(){}
-void Entity::setPosX(int x){
+void Entity::setPosX(float x){
 posX=x;
 }
-int Entity::getPosX(){
+float Entity::getPosX(){
 return posX;
 }
-void Entity::setPosY(int y){
+void Entity::setPosY(float y){
 posY=y;
 }
-int Entity::getPosY(){
+float Entity::getPosY(){
 return posY;
 }
 void Entity::setWidth(int w){

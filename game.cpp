@@ -4,6 +4,7 @@
 #include "platformCommon.h"
 #include <cstdlib>
 #include <iostream>
+#include <windows.h>
 Game::Game(int x, int y, int w, int h, unsigned int c, Player p[2], Ball b, bool a) : Entity(x,y,w,h,c){
 player[0]=p[0];
 player[1]=p[1];
@@ -23,12 +24,12 @@ void Game::getInput(Input* input){
     if(isDown(BUTTON_P2DOWN)) player[1].moveVertical(-player[1].getVelocity()*deltaTime);
     }
     else{
-        if(player[1].getPosY()+(player[1].getHeight()/2)>ball.getPosY()) player[1].moveVertical(-player[1].getVelocity()*deltaTime);
-        else player[1].moveVertical(player[1].getVelocity()*deltaTime);
+          if(player[1].getPosY()+(player[1].getHeight()/2)>ball.getPosY()&&ball.getPosX()>width/2) player[1].moveVertical(-player[1].getVelocity()*deltaTime/1.2);
+        else if(player[1].getPosY()+(player[1].getHeight()/2)<ball.getPosY()&&ball.getPosX()>width/2)player[1].moveVertical(player[1].getVelocity()*deltaTime/1.2);
     }
     if(isDown(BUTTON_MODE1)) ai=false;
     if(isDown(BUTTON_MODE2)) ai=true;
-    if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused;}
+    if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);}
 }
 void Game::simulateGame(){
     ball.setPosX(ball.getVelX()*deltaTime+ball.getPosX());
@@ -37,17 +38,20 @@ for(int i=0; i<2; i++){
 if(player[i].getPosY()+player[i].getHeight()>height) player[i].setPosY(height-player[i].getHeight());
 else if(player[i].getPosY()<0) player[i].setPosY(0);
 if(ball.didCollide(player[i])){
+        PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);
     ball.setPosX(Utils::isPositive(ball.getPosX()-player[i].getPosX())*10+ball.getPosX());
     ball.setVelY(500*ball.getBounce()*Utils::isPositive(ball.getPosY()-(player[i].getPosY()+player[i].getHeight()/2)));
     ball.setVelX(ball.getVelX()*-ball.getBounce());
 }
 }
-if(ball.getPosY()<=0 || ball.getPosY()+ball.getHeight()>=height){ball.setPosY(ball.getPosY()-10*Utils::isPositive(ball.getPosY()+ball.getHeight()-posY)); ball.setVelY(ball.getVelY()*-1);}
+if(ball.getPosY()<=0 || ball.getPosY()+ball.getHeight()>=height){ball.setPosY(ball.getPosY()-10*Utils::isPositive(ball.getPosY()+ball.getHeight()-posY)); ball.setVelY(ball.getVelY()*-1); PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);}
 if(ball.getPosX()<0){
 ball.setVelY(0);
 ball.setVelX(450);
 ball.setPosX((width-30)/2);
 ball.setPosY((height-30)/2);
+if((player[1].getScore()>player[0].getScore()+5))  PlaySound(TEXT("sounds\\hihihiha.wav"), NULL, SND_ASYNC);
+else PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
 player[1].incScore();
 }
 else if(ball.getPosX()+ball.getWidth()>width){
@@ -55,6 +59,8 @@ else if(ball.getPosX()+ball.getWidth()>width){
 ball.setVelX(-450);
 ball.setPosX((width-30)/2);
 ball.setPosY((height-30)/2);
+if((player[0].getScore()>player[1].getScore()+5))  PlaySound(TEXT("sounds\\hihihiha.wav"), NULL, SND_ASYNC);
+else PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
 player[0].incScore();
 }
 

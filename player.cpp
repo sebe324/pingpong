@@ -1,12 +1,12 @@
 #include "player.h"
 #include <iostream>
-Player::Player(int x, int y, int w, int h, unsigned int c, int btn1, int btn2, int vel) : Entity(x,y,w,h,c){
+Player::Player(float x, float y, int w, int h, unsigned int c, int btn1, int btn2, int vel) : Entity(x,y,w,h,c){
 score=0;
 btnUp=btn1;
 btnDown=btn2;
 velocity=vel;
 }
-Player::Player(int x, int y, int w, int h, unsigned int c, int s) : Entity(x,y,w,h,c){
+Player::Player(float x, float y, int w, int h, unsigned int c, int s) : Entity(x,y,w,h,c){
 score=s;
 }
 Player::Player() : Entity(){}

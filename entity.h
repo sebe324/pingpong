@@ -2,18 +2,18 @@
 #define ENTITY_H
 class Entity{
     protected:
-        int posX;
-        int posY;
+        float posX;
+        float posY;
         int width;
         int height;
         unsigned int color;
     public:
-        Entity(int x,int y, int w, int h, unsigned int c);
+        Entity(float x,float y, int w, int h, unsigned int c);
         Entity();
-        void setPosX(int x);
-        int getPosX();
-        void setPosY(int y);
-        int getPosY();
+        void setPosX(float x);
+        float getPosX();
+        void setPosY(float y);
+        float getPosY();
         void setWidth(int x);
         int getWidth();
         void setHeight(int y);

@@ -1,6 +1,6 @@
 #include "ball.h"
 
-Ball::Ball(int x, int y, int w, int h, unsigned int c, float b) : Entity(x,y,w,h,c){
+Ball::Ball(float x, float y, int w, int h, unsigned int c, float b) : Entity(x,y,w,h,c){
 bounce=b;
 velX=450;
 velY=0;

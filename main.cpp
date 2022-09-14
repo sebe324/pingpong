@@ -58,7 +58,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     windowClass.style= CS_HREDRAW | CS_VREDRAW;
     windowClass.lpszClassName = "Ping Pong Game";
     windowClass.lpfnWndProc = WindowCallback;
-
     RegisterClass(&windowClass);
     HWND window = CreateWindow(windowClass.lpszClassName, "Ping Pong Game", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
     HDC hdc = GetDC(window);

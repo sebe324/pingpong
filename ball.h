@@ -6,7 +6,7 @@ class Ball : public Entity{
     float velX;
     float velY;
 public:
-    Ball(int x,int y,int w,int h, unsigned int c, float b);
+    Ball(float x,float y,int w,int h, unsigned int c, float b);
     Ball();
     void setBounce(float b);
     float getBounce();
