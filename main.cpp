@@ -17,8 +17,8 @@ RenderState renderState;
     Player player1(30,175,20,150,0x0984e3, 0x57, 0x53, 650);
     Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN, 650);
     Player players[2]={player1,player2};
-    Ball ball(100,100,30,30,0xffffff,0.8);
-    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball);
+    Ball ball(100,100,30,30,0xffffff,1.03);
+    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball, false);
 LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     LRESULT result=0;
     switch(uMsg){
@@ -92,6 +92,9 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         input.buttons[b].isDown=isDown;\
         input.buttons[b].changed= isDown != input.buttons[b].isDown;\
         }
+                processButton(BUTTON_MODE1, 0x31);
+                processButton(BUTTON_MODE2, 0x32);
+                processButton(BUTTON_PAUSE, 0x50);
                 processButton(BUTTON_P1UP, player1.getBtnUp());
                 processButton(BUTTON_P1DOWN, player1.getBtnDown());
                 processButton(BUTTON_P2UP, player2.getBtnUp());
@@ -103,13 +106,17 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
             break;
             }
     }
+    game.setDeltaTime(deltaTime);
+    game.getInput(&input);
+    if(!game.getPaused()){
     //simulation
-    game.simulateGame(&input,deltaTime);
+    game.simulateGame();
     //rendering
     Renderer renderer(renderState.memory,renderState.width,renderState.height);
     renderer.drawBackground(0x2d3436);
     game.renderGame(&renderer);
     StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0 ,0, renderState.width, renderState.height, renderState.memory,&renderState.bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
+    }
     LARGE_INTEGER frameEndTime;
     QueryPerformanceCounter(&frameEndTime);
     deltaTime=float(frameEndTime.QuadPart-frameBeginTime.QuadPart)/performanceFrequency;

@@ -14,10 +14,15 @@ class Game : public Entity{
         Player player[2];
         Ball ball;
         float deltaTime;
+        bool ai;
+        bool paused;
     public:
-        Game(int x, int y, int w, int h, unsigned int c, Player p[2], Ball b);
-        void simulateGame(Input* input,float dt);
+        Game(int x, int y, int w, int h, unsigned int c, Player p[2], Ball b, bool a);
+        void getInput(Input* input);
+        void simulateGame();
         void renderGame(Renderer *renderer);
+        bool getPaused();
+        void setDeltaTime(float dt);
 };
 
 #endif
