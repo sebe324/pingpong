@@ -61,7 +61,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     RegisterClass(&windowClass);
     HWND window = CreateWindow(windowClass.lpszClassName, "Ping Pong Game", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
     HDC hdc = GetDC(window);
-
     Input input={};
     float deltaTime=0.016666f;
     LARGE_INTEGER frameBeginTime;
