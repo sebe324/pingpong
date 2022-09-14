@@ -22,7 +22,7 @@ class Entity{
         unsigned int getColor();
         bool didCollide(Entity entity);
         bool isInside(Entity entity);
-        void moveVertical(int amount);
-        void moveHorizontal(int amount);
+        void moveVertical(float amount);
+        void moveHorizontal(float amount);
 };
 #endif

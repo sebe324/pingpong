@@ -53,9 +53,9 @@ bool Entity::isInside(Entity entity){
        ) return true;
         else return false;
 }
-void Entity::moveHorizontal(int amount){
+void Entity::moveHorizontal(float amount){
 posX+=amount;
 }
-void Entity::moveVertical(int amount){
+void Entity::moveVertical(float amount){
 posY+=amount;
 }

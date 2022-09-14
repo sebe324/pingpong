@@ -24,8 +24,8 @@ void Game::getInput(Input* input){
     if(isDown(BUTTON_P2DOWN)) player[1].moveVertical(-player[1].getVelocity()*deltaTime);
     }
     else{
-          if(player[1].getPosY()+(player[1].getHeight()/2)>ball.getPosY()&&ball.getPosX()>width/2) player[1].moveVertical(-player[1].getVelocity()*deltaTime);
-        else if(player[1].getPosY()+(player[1].getHeight()/2)<ball.getPosY()&&ball.getPosX()>width/2)player[1].moveVertical(player[1].getVelocity()*deltaTime);
+          if(player[1].getPosY()+(player[1].getHeight()/2)>ball.getPosY()&&ball.getPosX()>width/1.5) player[1].moveVertical(-player[1].getVelocity()*deltaTime*0.55);
+        else if(player[1].getPosY()+(player[1].getHeight()/2)<ball.getPosY()&&ball.getPosX()>width/1.5)player[1].moveVertical(player[1].getVelocity()*deltaTime*0.55);
     }
     if(isDown(BUTTON_MODE1)) ai=false;
     if(isDown(BUTTON_MODE2)) ai=true;
