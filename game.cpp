@@ -17,6 +17,7 @@ void Game::setDeltaTime(float dt){
   deltaTime=dt;
 }
 void Game::getInput(Input* input){
+    if(!paused){
     if(isDown(BUTTON_P1UP)) player[0].moveVertical(player[0].getVelocity()*deltaTime);
     if(isDown(BUTTON_P1DOWN)) player[0].moveVertical(-player[0].getVelocity()*deltaTime);
     if(ai==false){
@@ -29,6 +30,7 @@ void Game::getInput(Input* input){
     }
     if(isDown(BUTTON_MODE1)) ai=false;
     if(isDown(BUTTON_MODE2)) ai=true;
+    }
     if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);}
 }
 void Game::simulateGame(){
@@ -44,7 +46,7 @@ if(ball.didCollide(player[i])){
     ball.setVelX(ball.getVelX()*-ball.getBounce());
 }
 }
-if(ball.getPosY()<=0 || ball.getPosY()+ball.getHeight()>=height){ball.setPosY(ball.getPosY()-10*Utils::isPositive(ball.getPosY()+ball.getHeight()-posY)); ball.setVelY(ball.getVelY()*-1); PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);}
+if(ball.getPosY()<=0 || ball.getPosY()+ball.getHeight()>=height){ball.setPosY(ball.getPosY()-(abs(Utils::clamp(0,ball.getPosY(), height)-ball.getPosY()))*Utils::isPositive(ball.getPosY()+ball.getHeight()-posY)); ball.setVelY(ball.getVelY()*-1); PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);}
 if(ball.getPosX()<0){
 ball.setVelY(0);
 ball.setVelX(450);
@@ -73,7 +75,13 @@ for(int i=0; i<2; i++) renderer->drawRectangle(posX+player[i].getPosX(),posY+pla
 renderer->drawNumber(player[0].getScore(),posX-100,posY+(height-75)/2,15,player[0].getColor());
 renderer->drawNumber(player[1].getScore(),posX+width+100,posY+(height-75)/2,15,player[1].getColor());
 renderer->drawNumber(1/deltaTime, renderer->getWidth()-40, renderer->getHeight()-30, 5, 0xffffff);
+renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
+renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
+renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());
 }
 bool Game::getPaused(){
 return paused;
+}
+void Game::setPaused(bool p){
+paused=p;
 }

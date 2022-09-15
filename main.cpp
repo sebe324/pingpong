@@ -18,13 +18,21 @@ RenderState renderState;
     Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN, 650);
     Player players[2]={player1,player2};
     Ball ball(100,100,30,30,0xffffff,1.03);
+    Renderer renderer(renderState.memory,renderState.width,renderState.height);
     Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball, false);
-LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
+    LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     LRESULT result=0;
     switch(uMsg){
-//
         case WM_CLOSE: case WM_DESTROY:{
-            isRunning=false;
+            game.setPaused(true);
+            PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);
+            if(MessageBox(hwnd, "Do you want to exit the game?", "Goodbye",MB_OKCANCEL | MB_ICONQUESTION)==1){
+                     PlaySound(TEXT("sounds\\close.wav"), NULL, SND_ASYNC);
+                      isRunning=false;
+            }else{
+                std::cout<<"test";
+            game.setPaused(false);
+            }
         }
         break;
     //
@@ -52,8 +60,8 @@ LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     }
 return result;
 }
-
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd){
+
     WNDCLASS windowClass = {};
     windowClass.style= CS_HREDRAW | CS_VREDRAW;
     windowClass.lpszClassName = "Ping Pong Game";
@@ -61,8 +69,8 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     RegisterClass(&windowClass);
     HWND window = CreateWindow(windowClass.lpszClassName, "Giga Chad Ping Pong - Made By Sebe324", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
     HDC hdc = GetDC(window);
+    float deltaTime=0.16666f;
     Input input={};
-    float deltaTime=0.016666f;
     LARGE_INTEGER frameBeginTime;
     QueryPerformanceCounter(&frameBeginTime);
     float performanceFrequency;
@@ -104,21 +112,25 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
             break;
             }
     }
-    game.setDeltaTime(deltaTime);
     game.getInput(&input);
     if(!game.getPaused()){
+            QueryPerformanceCounter(&frameBeginTime);
+    game.setDeltaTime(deltaTime);
     //simulation
     game.simulateGame();
     //rendering
-    Renderer renderer(renderState.memory,renderState.width,renderState.height);
+    renderer.setMemory(renderState.memory);
+    renderer.setWidth(renderState.width);
+    renderer.setHeight(renderState.height);
     renderer.drawBackground(0x2d3436);
     game.renderGame(&renderer);
     StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0 ,0, renderState.width, renderState.height, renderState.memory,&renderState.bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
-    }
     LARGE_INTEGER frameEndTime;
     QueryPerformanceCounter(&frameEndTime);
     deltaTime=float(frameEndTime.QuadPart-frameBeginTime.QuadPart)/performanceFrequency;
-    frameBeginTime=frameEndTime;
+    std::cout<<deltaTime<<std::endl;
     }
+    }
+    renderer.closeApp(0x2d3436, hdc, &renderState.bitmapInfo);
     return 0;
 }

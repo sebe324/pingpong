@@ -22,6 +22,7 @@ class Game : public Entity{
         void simulateGame();
         void renderGame(Renderer *renderer);
         bool getPaused();
+        void setPaused(bool p);
         void setDeltaTime(float dt);
 };
 

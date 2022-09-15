@@ -1,5 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
+#include <string>
+#include <windows.h>
 class Renderer{
     private:
         void* memory;
@@ -20,5 +22,12 @@ class Renderer{
         void drawNumber(int number, float x, float y, float nsize, unsigned int color);
         int getHeight();
         int getWidth();
+        void drawText(std::string text, float x, float y, float tsize, unsigned int color);
+        void drawLetter(bool letter[5][5], float x, float y, float lsize, unsigned int color);
+        void closeApp(unsigned int color, HDC hdc, BITMAPINFO* bitmapinfo);
+
+        void setMemory(void* m);
+        void setWidth(int w);
+        void setHeight(int h);
 };
 #endif
