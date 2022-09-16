@@ -60,8 +60,8 @@ void Entity::moveVertical(float amount){
 posY+=amount;
 }
 void Entity::stayInside(Entity entity){
-if(posX+width>entity.getPosX()+entity.getWidth())posX=entity.getWidth()-width;
+if(posX+width>entity.getPosX()+entity.getWidth())posX=entity.getPosX()+entity.getWidth()-width;
        else if(posX<entity.getPosX())posX=entity.getPosX();
-       if(posY+height>entity.getPosY()+entity.getHeight()) posY=entity.getHeight()-height;
+       if(posY+height>entity.getPosY()+entity.getHeight()) posY=entity.getPosY()+entity.getHeight()-height;
        else if(posY<entity.getPosY()) posY=entity.getPosY();
 }
