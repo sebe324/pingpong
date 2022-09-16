@@ -30,5 +30,6 @@ class Renderer{
         void setMemory(void* m);
         void setWidth(int w);
         void setHeight(int h);
+        void drawBorder(int x, int y, unsigned int recWidth, unsigned int recHeight, unsigned int thickness, unsigned int color);
 };
 #endif

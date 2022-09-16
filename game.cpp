@@ -62,8 +62,7 @@ ball.setVelY(0);
 ball.setVelX(450);
 ball.setPosX((width-30)/2);
 ball.setPosY((height-30)/2);
-if((player[1].getScore()>player[0].getScore()+5))  PlaySound(TEXT("sounds\\hihihiha.wav"), NULL, SND_ASYNC);
-else PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
+PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
 player[1].incScore();
 }
 else if(ball.getPosX()+ball.getWidth()>width){
@@ -71,8 +70,7 @@ else if(ball.getPosX()+ball.getWidth()>width){
 ball.setVelX(-450);
 ball.setPosX((width-30)/2);
 ball.setPosY((height-30)/2);
-if((player[0].getScore()>player[1].getScore()+5))  PlaySound(TEXT("sounds\\hihihiha.wav"), NULL, SND_ASYNC);
-else PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
+PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
 player[0].incScore();
 }
 
@@ -84,12 +82,13 @@ renderer->drawRectangle(posX,posY,width,height,color);
 renderer->drawRectangle(posX+(width-20)/2,posY, 20,height,0x929ea3);
 for(int i=0; i<2; i++){ renderer->drawRectangle(posX+border[i].getPosX(), posY+border[i].getPosY(), border[i].getWidth(), border[i].getHeight(), border[i].getColor());
         renderer->drawRectangle(posX+player[i].getPosX(),posY+player[i].getPosY(),player[i].getWidth(),player[i].getHeight(),player[i].getColor());
+        renderer->drawBorder(posX+player[i].getPosX(), posY+player[i].getPosY(), player[i].getWidth(), player[i].getHeight(),5 ,0x101010);
 }
 renderer->drawRectangle(posX+ball.getPosX(), posY+ball.getPosY(), ball.getWidth(), ball.getHeight(), ball.getColor());
 renderer->drawNumber(player[0].getScore(),posX-100,posY+(height-75)/2,15,player[0].getColor());
 renderer->drawNumber(player[1].getScore(),posX+width+100,posY+(height-75)/2,15,player[1].getColor());
 renderer->drawNumber(1/deltaTime, renderer->getWidth()-40, renderer->getHeight()-30, 5, 0xffffff);
-renderer->drawText("version 1.4.1",(0),renderer->getHeight()-20,3,0xffffff);
+renderer->drawText("version 1.4.2",(0),renderer->getHeight()-20,3,0xffffff);
 renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
 renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
 renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());

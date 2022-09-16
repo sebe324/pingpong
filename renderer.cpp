@@ -45,6 +45,37 @@ void Renderer::drawBackground2(int x, int y, unsigned int recWidth, unsigned int
         }
     }
 }
+void Renderer::drawBorder(int x, int y, unsigned int recWidth, unsigned int recHeight, unsigned int thickness, unsigned int color){
+    x=Utils::clamp(0, x,width);
+    y=Utils::clamp(0, y, height);
+    int x1=Utils::clamp(0,recWidth+x,width);
+    int y1=Utils::clamp(0,recHeight+y,height);
+    for(int i=y; i<y+thickness; i++){
+        unsigned int* pixel=(unsigned int*)memory+i*width+x;
+        for(int j=x; j<x1; j++){
+            *pixel++=color;
+        }
+    }
+    for(int i=y; i<y1; i++){
+        unsigned int* pixel=(unsigned int*)memory+i*width+x;
+        for(int j=x; j<x+thickness; j++){
+            *pixel++=color;
+        }
+    }
+    for(int i=y1-thickness; i<y1; i++){
+            unsigned int* pixel=(unsigned int*)memory+i*width+x;
+        for(int j=x; j<x1; j++){
+            *pixel++=color;
+        }
+    }
+    for(int i=y; i<y1; i++){
+        unsigned int* pixel=(unsigned int*)memory+i*width+x1-thickness;
+        for(int j=x1-thickness; j<x1; j++){
+            *pixel++=color;
+        }
+    }
+}
+
 void Renderer::drawRectangle(int x, int y, int recWidth, int recHeight, unsigned int color){
     int x1=x+recWidth;
     int y1=y+recHeight;
