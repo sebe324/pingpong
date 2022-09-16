@@ -12,11 +12,12 @@ ball=b;
 deltaTime=0;
 ai=a;
 paused=false;
+isRunning=true;
 }
 void Game::setDeltaTime(float dt){
   deltaTime=dt;
 }
-void Game::getInput(Input* input){
+void Game::getInput(Input* input, HWND hwnd){
     if(!paused){
     if(isDown(BUTTON_P1UP)) player[0].moveVertical(player[0].getVelocity()*deltaTime);
     if(isDown(BUTTON_P1DOWN)) player[0].moveVertical(-player[0].getVelocity()*deltaTime);
@@ -32,7 +33,8 @@ void Game::getInput(Input* input){
     if(isDown(BUTTON_MODE2)) ai=true;
     }
     if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);}
-}
+    if(isDown(BUTTON_EXIT)) {exitGame(hwnd); isDown(BUTTON_EXIT)=false;}
+    }
 void Game::simulateGame(){
     ball.setPosX(ball.getVelX()*deltaTime+ball.getPosX());
     ball.setPosY(ball.getVelY()*deltaTime+ball.getPosY());
@@ -75,6 +77,7 @@ for(int i=0; i<2; i++) renderer->drawRectangle(posX+player[i].getPosX(),posY+pla
 renderer->drawNumber(player[0].getScore(),posX-100,posY+(height-75)/2,15,player[0].getColor());
 renderer->drawNumber(player[1].getScore(),posX+width+100,posY+(height-75)/2,15,player[1].getColor());
 renderer->drawNumber(1/deltaTime, renderer->getWidth()-40, renderer->getHeight()-30, 5, 0xffffff);
+renderer->drawText("version 1.3.1",(0),renderer->getHeight()-20,3,0xffffff);
 renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
 renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
 renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());
@@ -84,4 +87,21 @@ return paused;
 }
 void Game::setPaused(bool p){
 paused=p;
+}
+void Game::exitGame(HWND hwnd){
+    paused=true;
+            PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);
+            if(MessageBox(hwnd, "Do you want to exit the game?", "Goodbye",MB_OKCANCEL | MB_ICONQUESTION)==1){
+                     PlaySound(TEXT("sounds\\close.wav"), NULL, SND_ASYNC);
+                      isRunning=false;
+            }else{
+            PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_SYNC);
+            paused=false;
+            }
+}
+bool Game::getIsRunning(){
+return isRunning;
+}
+void Game::setIsRunning(bool r){
+isRunning=r;
 }

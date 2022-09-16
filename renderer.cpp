@@ -134,6 +134,138 @@ return width;
 void Renderer::drawText(std::string text, float x, float y, float tsize, unsigned int color){
 for(int i=0; i<text.length(); i++){
     switch(text[i]){
+    case '.':
+            {
+            bool letter[5][5]={
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,1,0,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '0':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,0,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '1':
+            {
+            bool letter[5][5]={
+            {0,0,1,0,0},
+            {0,0,1,0,0},
+            {0,0,1,0,0},
+            {0,0,1,0,0},
+            {0,0,1,0,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '2':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,0,0,1,0},
+            {0,1,1,1,0},
+            {0,1,0,0,0},
+            {0,1,1,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '3':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,0,0,1,0},
+            {0,1,1,1,0},
+            {0,0,0,1,0},
+            {0,1,1,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '4':
+            {
+            bool letter[5][5]={
+            {0,0,1,1,0},
+            {0,1,0,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            {0,0,0,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '5':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,1,0,0,0},
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '6':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,1,0,0,0},
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '7':
+            {
+            bool letter[5][5]={
+            {0,0,1,1,0},
+            {0,0,0,1,0},
+            {0,0,1,1,0},
+            {0,0,0,1,0},
+            {0,0,0,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '8':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
+        case '9':
+            {
+            bool letter[5][5]={
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            {0,0,0,1,0},
+            {0,0,0,1,0},
+            };
+            drawLetter(letter,x,y,tsize,color);
+            }
+        break;
         case 'a':
             {
             bool letter[5][5]={

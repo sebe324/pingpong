@@ -24,15 +24,7 @@ RenderState renderState;
     LRESULT result=0;
     switch(uMsg){
         case WM_CLOSE: case WM_DESTROY:{
-            game.setPaused(true);
-            PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);
-            if(MessageBox(hwnd, "Do you want to exit the game?", "Goodbye",MB_OKCANCEL | MB_ICONQUESTION)==1){
-                     PlaySound(TEXT("sounds\\close.wav"), NULL, SND_ASYNC);
-                      isRunning=false;
-            }else{
-                std::cout<<"test";
-            game.setPaused(false);
-            }
+        game.exitGame(hwnd);
         }
         break;
     //
@@ -80,7 +72,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
         performanceFrequency=(float)perf.QuadPart;
     }
     srand(time(NULL));
-    while(isRunning){
+    while(game.getIsRunning()){
     //get input
     MSG message;
 
@@ -105,6 +97,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
                 processButton(BUTTON_P1DOWN, player1.getBtnDown());
                 processButton(BUTTON_P2UP, player2.getBtnUp());
                 processButton(BUTTON_P2DOWN, player2.getBtnDown());
+                processButton(BUTTON_EXIT,  27);
                 }break;
         default:
                 TranslateMessage(&message);
@@ -112,7 +105,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
             break;
             }
     }
-    game.getInput(&input);
+    game.getInput(&input, window);
     if(!game.getPaused()){
             QueryPerformanceCounter(&frameBeginTime);
     game.setDeltaTime(deltaTime);
@@ -128,7 +121,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     LARGE_INTEGER frameEndTime;
     QueryPerformanceCounter(&frameEndTime);
     deltaTime=float(frameEndTime.QuadPart-frameBeginTime.QuadPart)/performanceFrequency;
-    std::cout<<deltaTime<<std::endl;
     }
     }
     renderer.closeApp(0x2d3436, hdc, &renderState.bitmapInfo);

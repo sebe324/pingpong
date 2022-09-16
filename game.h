@@ -16,14 +16,18 @@ class Game : public Entity{
         float deltaTime;
         bool ai;
         bool paused;
+        bool isRunning;
     public:
         Game(int x, int y, int w, int h, unsigned int c, Player p[2], Ball b, bool a);
-        void getInput(Input* input);
+        void getInput(Input* input, HWND hwnd);
         void simulateGame();
         void renderGame(Renderer *renderer);
         bool getPaused();
         void setPaused(bool p);
         void setDeltaTime(float dt);
+        void exitGame(HWND hwnd);
+        bool getIsRunning();
+        void setIsRunning(bool r);
 };
 
 #endif
