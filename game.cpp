@@ -13,6 +13,10 @@ deltaTime=0;
 ai=a;
 paused=false;
 isRunning=true;
+Entity border1(0,0,width*0.15, height, 0x487594);
+Entity border2(width*0.85,0,width*0.15, height, 0x796265);
+border[0]=border1;
+border[1]=border2;
 }
 void Game::setDeltaTime(float dt){
   deltaTime=dt;
@@ -21,13 +25,17 @@ void Game::getInput(Input* input, HWND hwnd){
     if(!paused){
     if(isDown(BUTTON_P1UP)) player[0].moveVertical(player[0].getVelocity()*deltaTime);
     if(isDown(BUTTON_P1DOWN)) player[0].moveVertical(-player[0].getVelocity()*deltaTime);
+    if(isDown(BUTTON_P1LEFT)) player[0].moveHorizontal(-player[0].getVelocity()*deltaTime*0.5);
+    if(isDown(BUTTON_P1RIGHT)) player[0].moveHorizontal(player[0].getVelocity()*deltaTime*0.5);
     if(ai==false){
     if(isDown(BUTTON_P2UP)) player[1].moveVertical(player[1].getVelocity()*deltaTime);
     if(isDown(BUTTON_P2DOWN)) player[1].moveVertical(-player[1].getVelocity()*deltaTime);
+    if(isDown(BUTTON_P2LEFT)) player[1].moveHorizontal(-player[1].getVelocity()*deltaTime*0.5);
+    if(isDown(BUTTON_P2RIGHT)) player[1].moveHorizontal(player[1].getVelocity()*deltaTime*0.5);
     }
     else{
-          if(player[1].getPosY()+(player[1].getHeight()/2)>ball.getPosY()&&ball.getPosX()>width/1.5) player[1].moveVertical(-player[1].getVelocity()*deltaTime*0.55);
-        else if(player[1].getPosY()+(player[1].getHeight()/2)<ball.getPosY()&&ball.getPosX()>width/1.5)player[1].moveVertical(player[1].getVelocity()*deltaTime*0.55);
+          if(player[1].getPosY()+(player[1].getHeight()/2)>ball.getPosY()&&ball.getPosX()>width/2) player[1].moveVertical(-player[1].getVelocity()*deltaTime*0.55);
+        else if(player[1].getPosY()+(player[1].getHeight()/2)<ball.getPosY()&&ball.getPosX()>width/2)player[1].moveVertical(player[1].getVelocity()*deltaTime*0.55);
     }
     if(isDown(BUTTON_MODE1)) ai=false;
     if(isDown(BUTTON_MODE2)) ai=true;
@@ -35,12 +43,12 @@ void Game::getInput(Input* input, HWND hwnd){
     if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);}
     if(isDown(BUTTON_EXIT)) {exitGame(hwnd); isDown(BUTTON_EXIT)=false;}
     }
+
 void Game::simulateGame(){
     ball.setPosX(ball.getVelX()*deltaTime+ball.getPosX());
     ball.setPosY(ball.getVelY()*deltaTime+ball.getPosY());
 for(int i=0; i<2; i++){
-if(player[i].getPosY()+player[i].getHeight()>height) player[i].setPosY(height-player[i].getHeight());
-else if(player[i].getPosY()<0) player[i].setPosY(0);
+player[i].stayInside(border[i]);
 if(ball.didCollide(player[i])){
         PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);
     ball.setPosX(Utils::isPositive(ball.getPosX()-player[i].getPosX())*10+ball.getPosX());
@@ -70,14 +78,18 @@ player[0].incScore();
 
 }
 void Game::renderGame(Renderer *renderer){
+//renderer->drawBackground(0x2d3436);
+renderer->drawBackground2(posX, posY,width,height,0x2d3436);
 renderer->drawRectangle(posX,posY,width,height,color);
 renderer->drawRectangle(posX+(width-20)/2,posY, 20,height,0x929ea3);
+for(int i=0; i<2; i++){ renderer->drawRectangle(posX+border[i].getPosX(), posY+border[i].getPosY(), border[i].getWidth(), border[i].getHeight(), border[i].getColor());
+        renderer->drawRectangle(posX+player[i].getPosX(),posY+player[i].getPosY(),player[i].getWidth(),player[i].getHeight(),player[i].getColor());
+}
 renderer->drawRectangle(posX+ball.getPosX(), posY+ball.getPosY(), ball.getWidth(), ball.getHeight(), ball.getColor());
-for(int i=0; i<2; i++) renderer->drawRectangle(posX+player[i].getPosX(),posY+player[i].getPosY(),player[i].getWidth(),player[i].getHeight(),player[i].getColor());
 renderer->drawNumber(player[0].getScore(),posX-100,posY+(height-75)/2,15,player[0].getColor());
 renderer->drawNumber(player[1].getScore(),posX+width+100,posY+(height-75)/2,15,player[1].getColor());
 renderer->drawNumber(1/deltaTime, renderer->getWidth()-40, renderer->getHeight()-30, 5, 0xffffff);
-renderer->drawText("version 1.3.1",(0),renderer->getHeight()-20,3,0xffffff);
+renderer->drawText("version 1.4",(0),renderer->getHeight()-20,3,0xffffff);
 renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
 renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
 renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());

@@ -11,6 +11,7 @@ class Renderer{
         Renderer(void* memory, int recWidth, int recHeight); //constructor
         void drawBackground(unsigned int color); // draws a background with a specified color
 
+        void drawBackground2(int x, int y, unsigned int recWidth, unsigned int recHeight, unsigned int color);
         //draws a rectangle starting at (x, y) and ending at (x+width, y+height).
         void drawRectangle(int x0, int y0, int x1, int y1, unsigned int color);
 

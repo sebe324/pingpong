@@ -14,8 +14,8 @@ BITMAPINFO bitmapInfo;
 };
 
 RenderState renderState;
-    Player player1(30,175,20,150,0x0984e3, 0x57, 0x53, 650);
-    Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN, 650);
+    Player player1(30,175,20,150,0x0984e3, 0x57, 0x53, 0x41, 0x44, 650);
+    Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN, VK_LEFT, VK_RIGHT, 650);
     Player players[2]={player1,player2};
     Ball ball(100,100,30,30,0xffffff,1.03);
     Renderer renderer(renderState.memory,renderState.width,renderState.height);
@@ -61,6 +61,13 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     RegisterClass(&windowClass);
     HWND window = CreateWindow(windowClass.lpszClassName, "Giga Chad Ping Pong - Made By Sebe324", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
     HDC hdc = GetDC(window);
+    HANDLE hIcon = LoadImage(0, TEXT("icon.ico"), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE);
+if (hIcon) {
+    SendMessage(window, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+    SendMessage(window, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+    SendMessage(GetWindow(window, GW_OWNER), WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+    SendMessage(GetWindow(window, GW_OWNER), WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+}
     float deltaTime=0.16666f;
     Input input={};
     LARGE_INTEGER frameBeginTime;
@@ -95,8 +102,12 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
                 processButton(BUTTON_PAUSE, 0x50);
                 processButton(BUTTON_P1UP, player1.getBtnUp());
                 processButton(BUTTON_P1DOWN, player1.getBtnDown());
+                processButton(BUTTON_P1LEFT, player1.getBtnLeft());
+                processButton(BUTTON_P1RIGHT, player1.getBtnRight());
                 processButton(BUTTON_P2UP, player2.getBtnUp());
                 processButton(BUTTON_P2DOWN, player2.getBtnDown());
+                processButton(BUTTON_P2LEFT, player2.getBtnLeft());
+                processButton(BUTTON_P2RIGHT, player2.getBtnRight());
                 processButton(BUTTON_EXIT,  27);
                 }break;
         default:
@@ -115,7 +126,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     renderer.setMemory(renderState.memory);
     renderer.setWidth(renderState.width);
     renderer.setHeight(renderState.height);
-    renderer.drawBackground(0x2d3436);
     game.renderGame(&renderer);
     StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0 ,0, renderState.width, renderState.height, renderState.memory,&renderState.bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
     LARGE_INTEGER frameEndTime;

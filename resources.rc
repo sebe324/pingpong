@@ -1,0 +1,5 @@
+#ifndef RESOURCES_RC
+#define RESOURCES_RC
+
+MAINICON ICON "icon.ico"
+#endif // RESOURCES_RC

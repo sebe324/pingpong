@@ -24,5 +24,7 @@ class Entity{
         bool isInside(Entity entity);
         void moveVertical(float amount);
         void moveHorizontal(float amount);
+
+        void stayInside(Entity entity);
 };
 #endif

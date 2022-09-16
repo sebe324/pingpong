@@ -17,6 +17,34 @@ unsigned int* pixel = (unsigned int*)memory;
         }
     }
 }
+void Renderer::drawBackground2(int x, int y, unsigned int recWidth, unsigned int recHeight, unsigned int color){
+    x=Utils::clamp(0, x,width);
+    y=Utils::clamp(0, y, height);
+    for(int i=0; i<y; i++){
+        unsigned int* pixel=(unsigned int*)memory+i*width;
+        for(int j=0; j<width; j++){
+            *pixel++=color;
+        }
+    }
+    for(int i=y; i<recHeight+y; i++){
+        unsigned int* pixel=(unsigned int*)memory+i*width;
+        for(int j=0; j<x; j++){
+            *pixel++=color;
+        }
+    }
+    for(int i=y; i<recHeight+y; i++){
+            unsigned int* pixel=(unsigned int*)memory+i*width+recWidth+x;
+        for(int j=recWidth+x; j<width; j++){
+            *pixel++=color;
+        }
+    }
+    for(int i=y+recHeight; i<height; i++){
+            unsigned int* pixel=(unsigned int*)memory+i*width;
+        for(int j=0; j<width; j++){
+            *pixel++=color;
+        }
+    }
+}
 void Renderer::drawRectangle(int x, int y, int recWidth, int recHeight, unsigned int color){
     int x1=x+recWidth;
     int y1=y+recHeight;
@@ -591,7 +619,7 @@ for(int i=0; i<5; i++){
 }
 }
 void Renderer::closeApp(unsigned int color, HDC hdc, BITMAPINFO* bitmapinfo){
-    drawBackground(0xffffff);
+    drawBackground(0xdfe6e9);
     for (int i=0; i<height/2; i+=std::ceil(height/200)){
             for(int k=1; k<=std::ceil(height/200); k++){
                 unsigned int* pixel = (unsigned int*)memory+(i+k)*width;
