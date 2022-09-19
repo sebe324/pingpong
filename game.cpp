@@ -103,7 +103,7 @@ renderer->drawRectangle(posX+ball.getPosX(), posY+ball.getPosY(), ball.getWidth(
 renderer->drawNumber(player[0].getScore(),posX-100,posY+(height-75)/2,15,player[0].getColor());
 renderer->drawNumber(player[1].getScore(),posX+width+100,posY+(height-75)/2,15,player[1].getColor());
 renderer->drawNumber(1/deltaTime, renderer->getWidth()-40, renderer->getHeight()-30, 5, 0xffffff);
-renderer->drawText("version 1.4.2",(0),renderer->getHeight()-20,3,0xffffff);
+renderer->drawText("version 1.4.3",(0),renderer->getHeight()-20,3,0xffffff);
 renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
 renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
 renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());
