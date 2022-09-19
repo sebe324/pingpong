@@ -18,6 +18,7 @@ class Game : public Entity{
         bool paused;
         bool isRunning;
         Entity border[2];
+        Entity gameArea;
     public:
         Game(int x, int y, int w, int h, unsigned int c, Player p[2], Ball b, bool a);
         void getInput(Input* input, HWND hwnd);

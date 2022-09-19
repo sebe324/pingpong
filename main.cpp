@@ -122,12 +122,14 @@ if (hIcon) {
     game.setDeltaTime(deltaTime);
     //simulation
     game.simulateGame();
+    }
     //rendering
-    renderer.setMemory(renderState.memory);
+      renderer.setMemory(renderState.memory);
     renderer.setWidth(renderState.width);
     renderer.setHeight(renderState.height);
     game.renderGame(&renderer);
     StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0 ,0, renderState.width, renderState.height, renderState.memory,&renderState.bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
+    if(!game.getPaused()){
     LARGE_INTEGER frameEndTime;
     QueryPerformanceCounter(&frameEndTime);
     deltaTime=float(frameEndTime.QuadPart-frameBeginTime.QuadPart)/performanceFrequency;

@@ -17,6 +17,8 @@ Entity border1(0,0,width*0.15, height, 0x487594);
 Entity border2(width*0.85,0,width*0.15, height, 0x796265);
 border[0]=border1;
 border[1]=border2;
+Entity ga(0,0,width,height,0);
+gameArea=ga;
 }
 void Game::setDeltaTime(float dt){
   deltaTime=dt;
@@ -40,7 +42,14 @@ void Game::getInput(Input* input, HWND hwnd){
     if(isDown(BUTTON_MODE1)) ai=false;
     if(isDown(BUTTON_MODE2)) ai=true;
     }
-    if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);}
+    if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);
+
+    if(player[1].getScore()==15 || player[0].getScore()==15){
+        player[0].setScore(0);
+        player[1].setScore(0);
+        ball.setVelX(450);
+    }
+    }
     if(isDown(BUTTON_EXIT)) {exitGame(hwnd); isDown(BUTTON_EXIT)=false;}
     }
 
@@ -56,7 +65,12 @@ if(ball.didCollide(player[i])){
     ball.setVelX(ball.getVelX()*-ball.getBounce());
 }
 }
-if(ball.getPosY()<=0 || ball.getPosY()+ball.getHeight()>=height){ball.setPosY(ball.getPosY()-(abs(Utils::clamp(0,ball.getPosY(), height)-ball.getPosY()))*Utils::isPositive(ball.getPosY()+ball.getHeight()-posY)); ball.setVelY(ball.getVelY()*-1); PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);}
+if(ball.getPosY()<=0 || ball.getPosY()+ball.getHeight()>=height){
+        //ball.setPosY(ball.getPosY()-(abs(Utils::clamp(0,ball.getPosY(), height)-ball.getPosY()))*Utils::isPositive(ball.getPosY()+ball.getHeight()-posY));
+        ball.stayInside(gameArea);
+ball.setVelY(ball.getVelY()*-1);
+PlaySound(TEXT("sounds\\pop.wav"), NULL, SND_ASYNC);
+}
 if(ball.getPosX()<0){
 ball.setVelY(0);
 ball.setVelX(450);
@@ -72,6 +86,7 @@ ball.setPosX((width-30)/2);
 ball.setPosY((height-30)/2);
 PlaySound(TEXT("sounds\\point.wav"), NULL, SND_ASYNC);
 player[0].incScore();
+
 }
 
 }
@@ -92,6 +107,18 @@ renderer->drawText("version 1.4.2",(0),renderer->getHeight()-20,3,0xffffff);
 renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
 renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
 renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());
+if(player[0].getScore()==15){
+        ball.setVelX(0);
+    ball.setVelY(0);
+    renderer->drawText("player one wins. p to restart",posX,renderer->getHeight()/2,5,0xfdcb6e);
+    setPaused(true);
+}
+else if(player[1].getScore()==15){
+    ball.setVelX(0);
+    ball.setVelY(0);
+    renderer->drawText("player two wins. p to restart",posX,renderer->getHeight()/2,5,0xfdcb6e);
+    setPaused(true);
+}
 }
 bool Game::getPaused(){
 return paused;
