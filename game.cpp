@@ -4,19 +4,22 @@
 #include "platformCommon.h"
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <windows.h>
-Game::Game(int x, int y, int w, int h, unsigned int c, Player p[2], Ball b, bool a) : Entity(x,y,w,h,c){
-player[0]=p[0];
-player[1]=p[1];
-ball=b;
+Game::Game(int x, int y, int w, int h, unsigned int c, bool a) : Entity(x,y,w,h,c){
+loadSettingsFromFile("settings.txt");
+player[0]=Player(30,175,20,150,settings[PLAYER1_COLOR], 0x57, 0x53, 0x41, 0x44, 650);
+player[1]=Player(840,175,20,150,settings[PLAYER2_COLOR],VK_UP ,VK_DOWN, VK_LEFT, VK_RIGHT, 650);
+ball=Ball(100,100,30,30,0xffffff,1.03);
 deltaTime=0;
 ai=a;
 paused=false;
 isRunning=true;
-Entity border1(0,0,width*0.15, height, 0x487594);
-Entity border2(width*0.85,0,width*0.15, height, 0x796265);
+Entity border1(0,0,width*0.15, height, settings[PLAYER1_BG_COLOR]);
+Entity border2(width*0.85,0,width*0.15, height, settings[PLAYER2_BG_COLOR]);
 border[0]=border1;
 border[1]=border2;
+maxScore=settings[MAX_SCORE];
 Entity ga(0,0,width,height,0);
 gameArea=ga;
 }
@@ -44,7 +47,7 @@ void Game::getInput(Input* input, HWND hwnd){
     }
     if(isDown(BUTTON_PAUSE)) {isDown(BUTTON_PAUSE)=false; paused=!paused; PlaySound(TEXT("sounds\\pause.wav"), NULL, SND_ASYNC);
 
-    if(player[1].getScore()==15 || player[0].getScore()==15){
+    if(player[1].getScore()==maxScore || player[0].getScore()==maxScore){
         player[0].setScore(0);
         player[1].setScore(0);
         ball.setVelX(450);
@@ -92,10 +95,11 @@ player[0].incScore();
 }
 void Game::renderGame(Renderer *renderer){
 //renderer->drawBackground(0x2d3436);
-renderer->drawBackground2(posX, posY,width,height,0x2d3436);
+renderer->drawBackground2(posX, posY,width,height,settings[BG_COLOR]);
 renderer->drawRectangle(posX,posY,width,height,color);
 renderer->drawRectangle(posX+(width-20)/2,posY, 20,height,0x929ea3);
-for(int i=0; i<2; i++){ renderer->drawRectangle(posX+border[i].getPosX(), posY+border[i].getPosY(), border[i].getWidth(), border[i].getHeight(), border[i].getColor());
+for(int i=0; i<2; i++){
+        renderer->drawRectangle(posX+border[i].getPosX(), posY+border[i].getPosY(), border[i].getWidth(), border[i].getHeight(), border[i].getColor());
         renderer->drawRectangle(posX+player[i].getPosX(),posY+player[i].getPosY(),player[i].getWidth(),player[i].getHeight(),player[i].getColor());
         renderer->drawBorder(posX+player[i].getPosX(), posY+player[i].getPosY(), player[i].getWidth(), player[i].getHeight(),5 ,0x101010);
 }
@@ -107,13 +111,13 @@ renderer->drawText("version 1.4.3",(0),renderer->getHeight()-20,3,0xffffff);
 renderer->drawText("ping pong",(renderer->getWidth()-270)/2,renderer->getHeight()-50,5,0xffffff);
 renderer->drawText("player one",posX+(width/2-150)/2-60, posY-50, 5, player[0].getColor());
 renderer->drawText("player two",(width/2+posX+posX+width-150)/2-60, posY-50, 5, player[1].getColor());
-if(player[0].getScore()==15){
+if(player[0].getScore()==maxScore){
         ball.setVelX(0);
     ball.setVelY(0);
     renderer->drawText("player one wins. p to restart",posX,renderer->getHeight()/2,5,0xfdcb6e);
     setPaused(true);
 }
-else if(player[1].getScore()==15){
+else if(player[1].getScore()==maxScore){
     ball.setVelX(0);
     ball.setVelY(0);
     renderer->drawText("player two wins. p to restart",posX,renderer->getHeight()/2,5,0xfdcb6e);
@@ -142,4 +146,22 @@ return isRunning;
 }
 void Game::setIsRunning(bool r){
 isRunning=r;
+}
+
+void Game::loadSettingsFromFile(std::string fileName){
+std::fstream file;
+file.open(fileName);
+std::string line;
+int i=0;
+getline(file,line);
+while(getline(file,line)){
+std::string value=line.substr(line.find("=")+1);
+if(value.find("#")==0)
+    settings[i]=Utils::toHexInt(value.substr(1));
+else
+settings[i]=Utils::toInt(value);
+//std::cout<<settings[i]<<std::endl;
+i++;
+}
+file.close();
 }

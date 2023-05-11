@@ -14,12 +14,8 @@ BITMAPINFO bitmapInfo;
 };
 
 RenderState renderState;
-    Player player1(30,175,20,150,0x0984e3, 0x57, 0x53, 0x41, 0x44, 650);
-    Player player2(840,175,20,150,0xd63031,VK_UP ,VK_DOWN, VK_LEFT, VK_RIGHT, 650);
-    Player players[2]={player1,player2};
-    Ball ball(100,100,30,30,0xffffff,1.03);
     Renderer renderer(renderState.memory,renderState.width,renderState.height);
-    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, players,ball, false);
+    Game game((renderState.width-900)/2,renderState.height-600,900,500,0x636e72, false);
     LRESULT CALLBACK WindowCallback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     LRESULT result=0;
     switch(uMsg){
@@ -100,14 +96,14 @@ if (hIcon) {
                 processButton(BUTTON_MODE1, 0x31);
                 processButton(BUTTON_MODE2, 0x32);
                 processButton(BUTTON_PAUSE, 0x50);
-                processButton(BUTTON_P1UP, player1.getBtnUp());
-                processButton(BUTTON_P1DOWN, player1.getBtnDown());
-                processButton(BUTTON_P1LEFT, player1.getBtnLeft());
-                processButton(BUTTON_P1RIGHT, player1.getBtnRight());
-                processButton(BUTTON_P2UP, player2.getBtnUp());
-                processButton(BUTTON_P2DOWN, player2.getBtnDown());
-                processButton(BUTTON_P2LEFT, player2.getBtnLeft());
-                processButton(BUTTON_P2RIGHT, player2.getBtnRight());
+                processButton(BUTTON_P1UP, game.player[0].getBtnUp());
+                processButton(BUTTON_P1DOWN, game.player[0].getBtnDown());
+                processButton(BUTTON_P1LEFT, game.player[0].getBtnLeft());
+                processButton(BUTTON_P1RIGHT, game.player[0].getBtnRight());
+                processButton(BUTTON_P2UP, game.player[1].getBtnUp());
+                processButton(BUTTON_P2DOWN, game.player[1].getBtnDown());
+                processButton(BUTTON_P2LEFT, game.player[1].getBtnLeft());
+                processButton(BUTTON_P2RIGHT,game.player[1].getBtnRight());
                 processButton(BUTTON_EXIT,  27);
                 }break;
         default:

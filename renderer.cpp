@@ -660,7 +660,7 @@ void Renderer::closeApp(unsigned int color, HDC hdc, BITMAPINFO* bitmapinfo){
             }
             for(int k=1; k<=std::ceil(height/200); k++){
             unsigned int *pixel2=(unsigned int*)memory+(height-i-k)*width;
-              std::cout<<height-i-k<<std::endl;
+
              for(int j=0; j<width; j++){
             *pixel2--=color;
         }

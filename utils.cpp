@@ -8,3 +8,18 @@ Utils::clamp(int minimum, int value, int maximum){
     else if(value>=maximum) return maximum;
     else return value;
 }
+
+Utils::toHexInt(std::string str){
+  int num;
+    std::stringstream ss(str);
+    ss >> std::hex >> num;
+    return num;
+}
+
+Utils::toInt(std::string str){
+  int num;
+    std::stringstream ss(str);
+    ss >> num;
+    return num;
+}
+
