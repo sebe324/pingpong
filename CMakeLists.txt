@@ -7,7 +7,8 @@ file(GLOB SOURCE CONFIGURE_DEPENDS "*.h" "*.cpp")
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/settings.txt
      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Debug)
-
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/sounds/
+    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Debug/sounds)
 add_executable(pingpong WIN32 ${SOURCE})
 
 target_link_libraries(pingpong PRIVATE winmm.lib gdi32.lib)
